@@ -4,8 +4,8 @@
   "description": "Backend api",
   "main": "server.js",
   "scripts": {
-    "start": " NODE_ENV=production nodemon server.js",
-    "dev":"nodemon server.js"
+    "start": "NODE_ENV=production nodemon server.js",
+    "dev": "nodemon server.js"
   },
   "author": "Mupela",
   "license": "MIT",
@@ -13,7 +13,10 @@
     "nodemon": "^2.0.7"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.12.0",
+    "morgan": "^1.10.0"
   }
 }
