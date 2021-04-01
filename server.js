@@ -2,6 +2,7 @@ const express = require("express");
 const  dotenv = require('dotenv');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
+const colors = require('colors');
 const logger = require('./middelwares/logger');
 
 // set were env file is 
@@ -18,7 +19,7 @@ if(process.env.NODE_ENV == 'development'){
     app.use(morgan('dev'));
 }
 
-app.use(logger)
+// app.use(logger)
 
 // Set proper Headers on Backend
 app.use((req,res, next)=>{
@@ -30,11 +31,11 @@ app.use((req,res, next)=>{
 
 app.use('/api/v1/Bootcomp',require('./routes/routes'));
 
-const server = app.listen(PORT, console.log(`the server is runing in ${process.env.NODE_ENV} on port:${PORT}`));
+const server = app.listen(PORT, console.log(`the server is runing in ${process.env.NODE_ENV} on port:${PORT}`.yellow.bold));
 
 // unhundled promisses rejection
 process.on('unhandledRejection',(err,promis)=>{
-    console.log(`ERROR: ${err.message}`);
+    console.log(`ERROR: ${err.message}`.bold);
  // close saver
  server.close(()=> process.exit(1));
 

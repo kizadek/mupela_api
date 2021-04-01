@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const colors = require('colors');
 
 const connectDB = async () =>{
     const conn = await mongoose.connect(process.env.MONGO_URL,{
@@ -7,7 +8,7 @@ const connectDB = async () =>{
         useFindAndModify:false,
         useCreateIndex: true
     })
-    console.log(`MongoDB Connected ${ conn.connection.host}`)
+    console.log(`MongoDB Connected ${ conn.connection.host}`.rainbow.bold)
 }
 
 
