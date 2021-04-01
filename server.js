@@ -1,8 +1,10 @@
 const express = require("express");
 const  dotenv = require('dotenv');
 const morgan = require('morgan');
-const connectDB = require('./config/db')
+const connectDB = require('./config/db');
 const logger = require('./middelwares/logger');
+
+// set were env file is 
 dotenv.config({path:"./config/config.env"});
 
 // connecting to the database
@@ -10,11 +12,11 @@ connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+
 // set morgan
 if(process.env.NODE_ENV == 'development'){
     app.use(morgan('dev'));
 }
-
 
 app.use(logger)
 
