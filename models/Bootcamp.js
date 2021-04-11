@@ -1,63 +1,68 @@
 const mongoose = require('mongoose');
 
 
-const BootCompSchema = mongoose.Schema({
-  name: {
+
+//@ creating a schema for the BootComp
+
+const BootcampSchema = new mongoose.Schema(
+  {
+    name: {
       type: String,
-      required: [true,'Please add a name'],
+      required: [true, 'Please add a name'],
       unique: true,
       trim: true,
       maxlength: [50, 'Name can not be more than 50 characters']
     },
-    slag: String,
-    description:{
-      type: string,
-      required: [true,'Please add a discription'],
-      maxlength: [500,'Discription cant be more than 500 characters']
+    slug: String,
+    description: {
+      type: String,
+      required: [true, 'Please add a description'],
+      maxlength: [500, 'Description can not be more than 500 characters']
     },
-    website:{
-       type: string,
-       match: [
+    website: {
+      type: String,
+      match: [
         /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
         'Please use a valid URL with HTTP or HTTPS'
       ]
     },
-    phone:{
-       type:string,
-       maxlength: [20, 'Phone number cant have more than 20 characters']
+    phone: {
+      type: String,
+      maxlength: [20, 'Phone number can not be longer than 20 characters']
     },
-    email:{
-        type: string,
-        match: [
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-            'Please add a valid email'
-          ]
-
+    email: {
+      type: String,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        'Please add a valid email'
+      ]
     },
-    address:{
-        type: string,
-        required: [true, 'Please add an addrtess']
+    address: {
+      type: String,
+      required: [true, 'Please add an address']
     },
     location: {
-        // GeoJSON Point
-        type: {
-          type: String,
-          enum: ['Point']
-        },
-    coordinates:{
-       type: [Number],
-       index: '2dsphere'
-    },
-    formattedAddress: string,
-    street: string,
-    city: string,
-    state: zipcode,
-    country: string,
+      // GeoJSON Point
+      type: {
+        type: String,
+        enum: ['Point']
+      },
+      coordinates: {
+        type: [Number],
+        index: '2dsphere'
+      },
+      formattedAddress: String,
+      street: String,
+      city: String,
+      state: String,
+      zipcode: String,
+      country: String
     },
     careers: {
-    type: [string],
-    required: true,
-    enum: [
+      // Array of strings
+      type: [String],
+      required: true,
+      enum: [
         'Web Development',
         'Mobile Development',
         'UI/UX',
@@ -66,41 +71,46 @@ const BootCompSchema = mongoose.Schema({
         'Other'
       ]
     },
-    
-    averageRating:{
-       type: Number,
-       min:[1, 'Rating must be at least 1'],
-       max: [10, 'Rating must not be more than 10']
+    averageRating: {
+      type: Number,
+      min: [1, 'Rating must be at least 1'],
+      max: [10, 'Rating must can not be more than 10']
     },
     averageCost: Number,
-    photo:{
-       true: string,
-       default: 'no-photo.jpg'
+    photo: {
+      type: String,
+      default: 'no-photo.jpg'
     },
-    housing:{
-       type: Boolean,
-       default: false
+    housing: {
+      type: Boolean,
+      default: false
+    },
+    jobAssistance: {
+      type: Boolean,
+      default: false
     },
     jobGuarantee: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false
     },
-    acceptGi:{
-        type: Boolean,
-        default: false
+    acceptGi: {
+      type: Boolean,
+      default: false
     },
-    createdAt:{
-        type: Date,
-        default: Date.now
+    createdAt: {
+      type: Date,
+      default: Date.now
     },
     user: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User',
-        required: true
-      }
-    },
-    {
-      toJSON: { virtuals: true },
-      toObject: { virtuals: true }
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: false
     }
+  },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+  }
 );
+
+module.exports = mongoose.model('Bootcamp',BootcampSchema);

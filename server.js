@@ -14,6 +14,9 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// Json passer
+app.use(express.json());
+
 // set morgan
 if(process.env.NODE_ENV == 'development'){
     app.use(morgan('dev'));
