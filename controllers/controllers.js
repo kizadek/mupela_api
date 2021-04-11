@@ -1,4 +1,5 @@
 const express = require('express');
+const BootComp = require('../models/Bootcamp');
 const app = express();
 
 /*CRUD CONTROLLERS*/
@@ -8,12 +9,24 @@ const app = express();
 exports.getOneBootcamp = async (req,res)=>{
    // console.log('GetOne: [GET] / Bootcomp/i:d');
     try{
+
+        const bootcomp = await BootComp.findById(req.params.id);
+
+        if(!bootcomp){
+           return res.status(404). json({
+                succsses: false,
+                msg:`no Bootcamp with such id: ${req.params.id}`
+            })
+        }
+
             res.json({
                     succsses: true,
-                    msg:`Showing  Bootcomp with id:${req.params.id}`
+                    msg:`Showing  Bootcomp with id:${req.params.id}`,
+                    data: bootcomp 
                 })
     }catch (err){
-       console.log(err)
+       res.status(400).json({succsses:false, msg:err});
+      // console.log(err);
     }
 }
 
@@ -23,9 +36,12 @@ exports.getOneBootcamp = async (req,res)=>{
 exports.getAllBootcamp = async (req,res,next)=>{
  // console.log("getAll: [GET] / Bootcomp/");
    try{
+
+    const  bootcamps = await BootComp.find();
        res.json({
            succsses: true,
-           msg:'Showing a list of All BootComp'
+           msg:'Showing a list of All BootComp in the DataBase',
+           data: bootcamps
        }) 
    }catch(err){
        console.log(err);
@@ -38,24 +54,36 @@ exports.getAllBootcamp = async (req,res,next)=>{
 exports.updateOneBootcamp = async (req,res,next)=>{
     //console.log('Update: [PUT] /Bootcomp/:id');
     try{
-        res.json({
-           succsses:true,
-           msg: `Update Bootcomp ${req.params.id}`
-        });
+       
+       const bootcomp = await BootComp.findByIdAndUpdate(req.params.id,req.body); 
+       
+       if(!bootcomp){
+        return  res.json({
+             succsses:true,
+             msg: `Filed To  Update Bootcomp with this Id: ${req.params.id}`
+          });
+      }
+
+       res.status(200).json({succsses:true, msg:`Update Bootcomp ${req.params.id}`,data:bootcomp });
+      
     }catch(err){
-       console.log(err);
+
+         res.status(200).json({succsses: false, msg: `Bootcomp with ${req.params.id} not found`})
     }
 }
 // CREATE-ONE 
 //@route POST /api/v1/bootcamps
 //@access private
-exports.createOneBootcamp = async(req,res, next)=>{
+exports.createOneBootcamp = async(req,res, next)=>{ 
    // console.log('Create: [POST] /Bootcomp');
     try{
-        res.json({
+
+       const bootcomp = await BootComp.create(req.body);
+       
+        res.status(201). json({
             succsses: true,
-            msg: 'Creating one Bootcomp',
-            data: req.body
+            msg: ' one Bootcomp Created',
+            data: bootcomp
         })
     }catch(err){
       console.log(err);
@@ -69,9 +97,11 @@ exports.createOneBootcamp = async(req,res, next)=>{
 exports.deleteOneBootcamp = async (req,res,next) =>{
    // console.log('Delete: [DELETE] /Bootcomp/');
     try{
-       res.json({
+        const bootcamps = await BootComp.findByIdAndDelete(req.params.id);
+               res.json({
            succsses: true,
-           msg: `Bootcomp Deleted with id: ${req.params.id} `
+           msg: `Bootcomp Deleted with id: ${req.params.id} `,
+           data: {}
        })
     }catch(err){
         console.log(err);
