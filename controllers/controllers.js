@@ -55,12 +55,15 @@ exports.updateOneBootcamp = async (req,res,next)=>{
     //console.log('Update: [PUT] /Bootcomp/:id');
     try{
        
-       const bootcomp = await BootComp.findByIdAndUpdate(req.params.id,req.body); 
+       const bootcomp = await BootComp.findByIdAndUpdate(req.params.id,req.body,{
+           runValidators: true,
+           new: true
+       }); 
        
        if(!bootcomp){
-        return  res.json({
-             succsses:true,
-             msg: `Filed To  Update Bootcomp with this Id: ${req.params.id}`
+        return  res.status(404).json({
+             succsses:false,
+             msg: `Filed no Bootcomp with this Id: ${req.params.id}`
           });
       }
 
@@ -68,7 +71,7 @@ exports.updateOneBootcamp = async (req,res,next)=>{
       
     }catch(err){
 
-         res.status(200).json({succsses: false, msg: `Bootcomp with ${req.params.id} not found`})
+         res.status(400).json({succsses: false, msg: err})
     }
 }
 // CREATE-ONE 
@@ -100,7 +103,7 @@ exports.deleteOneBootcamp = async (req,res,next) =>{
         const bootcamps = await BootComp.findByIdAndDelete(req.params.id);
                res.json({
            succsses: true,
-           msg: `Bootcomp Deleted with id: ${req.params.id} `,
+           msg: `Bootcomp  with id: ${req.params.id} Deleted `,
            data: {}
        })
     }catch(err){
